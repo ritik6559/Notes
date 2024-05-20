@@ -1,8 +1,7 @@
-import 'dart:async';
-
-import 'package:mynotes/model/note.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+import '../model/note.dart';
+
 
 // Steps involvedP:-
 // 1. Setup Sqflite
@@ -18,49 +17,49 @@ class NotesDatabase {
   NotesDatabase._init();
 
   Future<Database> get database async {
-    //if database exists return databse
     if (_database != null) return _database!;
 
-    //else initialize or create a database.
     _database = await _initDB('notes.db');
     return _database!;
   }
 
   Future<Database> _initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
-
     final path = join(dbPath, filePath);
 
-    //opening database.
-    return await openDatabase(path, version: 1, onCreate: _createDb);
+    return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
-  //creating database.
-  Future _createDb(Database db, int version) async {
-    final idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    final boolType = 'BOOLEAN NON NULL';
-    final integerType = 'INTEGER NON NULL';
-    final textType = 'TEXT NON NULL';
+  Future _createDB(Database db, int version) async {
+    const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
+    const textType = 'TEXT NOT NULL';
+    const boolType = 'BOOLEAN NOT NULL';
+    const integerType = 'INTEGER NOT NULL';
 
     await db.execute('''
-CREATE TABLE $tableNotes(
-  //inside we need to define all of our columns.
-  ${NoteFields.id} $idType,
+CREATE TABLE $tableNotes ( 
+  ${NoteFields.id} $idType, 
   ${NoteFields.isImportant} $boolType,
   ${NoteFields.number} $integerType,
   ${NoteFields.title} $textType,
   ${NoteFields.description} $textType,
-  ${NoteFields.time} $textType,
-)
+  ${NoteFields.time} $textType
+  )
 ''');
   }
 
-  //CRUD operations.
   Future<Note> create(Note note) async {
     final db = await instance.database;
 
-    final id = await db.insert(tableNotes, note.toJson());
+    // final json = note.toJson();
+    // final columns =
+    //     '${NoteFields.title}, ${NoteFields.description}, ${NoteFields.time}';
+    // final values =
+    //     '${json[NoteFields.title]}, ${json[NoteFields.description]}, ${json[NoteFields.time]}';
+    // final id = await db
+    //     .rawInsert('INSERT INTO table_name ($columns) VALUES ($values)');
 
+    final id = await db.insert(tableNotes, note.toJson());
     return note.copy(id: id);
   }
 
@@ -68,9 +67,9 @@ CREATE TABLE $tableNotes(
     final db = await instance.database;
 
     final maps = await db.query(
-      tableNotes, //table name
-      columns: NoteFields.values, //content we need to retrieve from db.
-      where: '${NoteFields.id} = ?', //or'${NotesFields.id} = $id'
+      tableNotes,
+      columns: NoteFields.values,
+      where: '${NoteFields.id} = ?',
       whereArgs: [id],
     );
 
@@ -85,10 +84,10 @@ CREATE TABLE $tableNotes(
     final db = await instance.database;
 
     final orderBy = '${NoteFields.time} ASC';
+    // final result =
+    //     await db.rawQuery('SELECT * FROM $tableNotes ORDER BY $orderBy');
 
-    final result = await db.query(tableNotes,
-        orderBy:
-            orderBy); // this will provide List<Map> so will convert it to list.
+    final result = await db.query(tableNotes, orderBy: orderBy);
 
     return result.map((json) => Note.fromJson(json)).toList();
   }
@@ -114,9 +113,9 @@ CREATE TABLE $tableNotes(
     );
   }
 
-  //closing datanase.
   Future close() async {
     final db = await instance.database;
+
     db.close();
   }
 }

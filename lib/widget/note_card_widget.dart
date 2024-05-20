@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mynotes/model/note.dart';
 import 'package:intl/intl.dart';
+import '../model/note.dart';
 
 final _lightColors = [
   Colors.amber.shade300,
@@ -12,16 +12,18 @@ final _lightColors = [
 ];
 
 class NoteCardWidget extends StatelessWidget {
-   final Note note;
-  final int index;
   const NoteCardWidget({
-    super.key, 
-    required this.note, 
-    required this.index
-    });
+    Key? key,
+    required this.note,
+    required this.index,
+  }) : super(key: key);
+
+  final Note note;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
+    /// Pick colors from the accent colors based on index
     final color = _lightColors[index % _lightColors.length];
     final time = DateFormat.yMMMd().format(note.createdTime);
     final minHeight = getMinHeight(index);
@@ -39,8 +41,7 @@ class NoteCardWidget extends StatelessWidget {
               time,
               style: TextStyle(color: Colors.grey.shade700),
             ),
-            const SizedBox(height: 4,),
-
+            const SizedBox(height: 4),
             Text(
               note.title,
               style: const TextStyle(
@@ -50,11 +51,12 @@ class NoteCardWidget extends StatelessWidget {
               ),
             ),
           ],
-          ),
+        ),
       ),
     );
   }
 
+  /// To return different height for different widgets
   double getMinHeight(int index) {
     switch (index % 4) {
       case 0:
@@ -69,6 +71,4 @@ class NoteCardWidget extends StatelessWidget {
         return 100;
     }
   }
-
-
 }
