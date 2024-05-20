@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mynotes/database/notes_database.dart';
 import 'package:mynotes/model/note.dart';
+import 'package:mynotes/pages/edit_note_page.dart';
 
 class NoteDetailPage extends StatefulWidget {
   final int noteId;
@@ -40,8 +41,14 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.edit),
+            onPressed: () async {
+              if (isLoading) return;
+
+              await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AddEditNotePage(note: note),
+              ));
+            },
+            icon: const Icon(Icons.edit_outlined),
           ),
           IconButton(
               onPressed: () async {
