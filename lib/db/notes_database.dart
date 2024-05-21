@@ -2,7 +2,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../model/note.dart';
 
-
 // Steps involvedP:-
 // 1. Setup Sqflite
 // 2. Open DataBase
@@ -75,6 +74,8 @@ CREATE TABLE $tableNotes (
       throw Exception('ID $id not found');
     }
   }
+
+  
 
   Future<List<Note>> readAllNotes() async {
     final db = await instance.database;

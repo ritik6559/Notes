@@ -56,16 +56,16 @@ class _NotesPageState extends State<NotesPage> {
             SizedBox(width: 12)
           ],
         ),
-        body: Center(
-          child: isLoading
-              ? const CircularProgressIndicator()
-              : notes.isEmpty
-                  ? const Text(
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : notes.isEmpty
+                ? const Center(
+                  child: Text(
                       'No Notes',
                       style: TextStyle(color: Colors.grey, fontSize: 24),
-                    )
-                  : buildNotes(),
-        ),
+                    ),
+                )
+                : buildNotes(),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.black,
           child: const Icon(
@@ -76,7 +76,6 @@ class _NotesPageState extends State<NotesPage> {
             await Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const AddEditNotePage()),
             );
-
             refreshNotes();
           },
         ),
@@ -94,10 +93,11 @@ class _NotesPageState extends State<NotesPage> {
               crossAxisCellCount: 1,
               child: GestureDetector(
                 onTap: () async {
-                  await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => NoteDetailPage(noteId: note.id!),
-                  ));
-
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => NoteDetailPage(noteId: note.id!),
+                    ),
+                  );
                   refreshNotes();
                 },
                 child: NoteCardWidget(note: note, index: index),
