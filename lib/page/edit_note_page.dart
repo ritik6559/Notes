@@ -7,9 +7,9 @@ class AddEditNotePage extends StatefulWidget {
   final Note? note;
 
   const AddEditNotePage({
-    Key? key,
+    super.key,
     this.note,
-  }) : super(key: key);
+  });
 
   @override
   State<AddEditNotePage> createState() => _AddEditNotePageState();
@@ -17,8 +17,6 @@ class AddEditNotePage extends StatefulWidget {
 
 class _AddEditNotePageState extends State<AddEditNotePage> {
   final _formKey = GlobalKey<FormState>();
-  late bool isImportant;
-  late int number;
   late String title;
   late String description;
 
@@ -26,8 +24,6 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
   void initState() {
     super.initState();
 
-    isImportant = widget.note?.isImportant ?? false;
-    number = widget.note?.number ?? 0;
     title = widget.note?.title ?? '';
     description = widget.note?.description ?? '';
   }
@@ -47,13 +43,8 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
         body: Form(
           key: _formKey,
           child: NoteFormWidget(
-            isImportant: isImportant,
-            number: number,
             title: title,
             description: description,
-            onChangedImportant: (isImportant) =>
-                setState(() => this.isImportant = isImportant),
-            onChangedNumber: (number) => setState(() => this.number = number),
             onChangedTitle: (title) => setState(() => this.title = title),
             onChangedDescription: (description) =>
                 setState(() => this.description = description),
@@ -66,15 +57,14 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.black,
-          backgroundColor: isFormValid
-              ? Theme.of(context).colorScheme.background
-              : Colors.grey.shade700,
-        ),
+      child: TextButton(
+        
         onPressed: addOrUpdateNote,
-        child: const Icon(Icons.check),
+        child:Icon(Icons.check,
+        size: 30,
+        color: isFormValid
+              ? Theme.of(context).colorScheme.background
+              : Colors.grey.shade700,),
       ),
     );
   }
@@ -97,8 +87,6 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
 
   Future updateNote() async {
     final note = widget.note!.copy(
-      isImportant: isImportant,
-      number: number,
       title: title,
       description: description,
     );
@@ -109,8 +97,6 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
   Future addNote() async {
     final note = Note(
       title: title,
-      isImportant: true,
-      number: number,
       description: description,
       createdTime: DateTime.now(),
     );

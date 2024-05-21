@@ -45,13 +45,16 @@ class _NotesPageState extends State<NotesPage> {
           title: const Text(
             'Notes',
             style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 34),
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 34),
           ),
-          actions: const [Icon(Icons.search,
-          color: Colors.white,
-          size: 30,), SizedBox(width: 12)],
+          actions: const [
+            Icon(
+              Icons.search,
+              color: Colors.white,
+              size: 30,
+            ),
+            SizedBox(width: 12)
+          ],
         ),
         body: Center(
           child: isLoading
@@ -65,8 +68,10 @@ class _NotesPageState extends State<NotesPage> {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.black,
-          child: const Icon(Icons.add,
-          color: Colors.white,),
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
           onPressed: () async {
             await Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const AddEditNotePage()),
@@ -77,29 +82,28 @@ class _NotesPageState extends State<NotesPage> {
         ),
       );
   Widget buildNotes() => StaggeredGrid.count(
-      crossAxisCount: 2,
-      mainAxisSpacing: 2,
-      crossAxisSpacing: 2,
-      children: List.generate(
-        notes.length,
-        (index) {
-          final note = notes[index];
+        crossAxisCount: 2,
+        mainAxisSpacing: 2,
+        crossAxisSpacing: 2,
+        children: List.generate(
+          notes.length,
+          (index) {
+            final note = notes[index];
 
-          return StaggeredGridTile.fit(
-            crossAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () async {
-                await Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => NoteDetailPage(noteId: note.id!),
-                ));
+            return StaggeredGridTile.fit(
+              crossAxisCellCount: 1,
+              child: GestureDetector(
+                onTap: () async {
+                  await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => NoteDetailPage(noteId: note.id!),
+                  ));
 
-                refreshNotes();
-              },
-              child: NoteCardWidget(note: note, index: index),
-            ),
-          );
-        },
-      ));
-
-  
+                  refreshNotes();
+                },
+                child: NoteCardWidget(note: note, index: index),
+              ),
+            );
+          },
+        ),
+      );
 }
