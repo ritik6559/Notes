@@ -1,12 +1,8 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../model/note.dart';
-
-// Steps involvedP:-
-// 1. Setup Sqflite
-// 2. Open DataBase
-// 3. Create Table
-// 4. Perform CRUD
 
 class NotesDatabase {
   static final NotesDatabase instance = NotesDatabase._init();
@@ -35,7 +31,7 @@ class NotesDatabase {
 
     await db.execute('''
 CREATE TABLE $tableNotes ( 
-  ${NoteFields.id} $idType,
+  ${NoteFields.id} $idType, 
   ${NoteFields.title} $textType,
   ${NoteFields.description} $textType,
   ${NoteFields.time} $textType
@@ -74,8 +70,6 @@ CREATE TABLE $tableNotes (
       throw Exception('ID $id not found');
     }
   }
-
-  
 
   Future<List<Note>> readAllNotes() async {
     final db = await instance.database;

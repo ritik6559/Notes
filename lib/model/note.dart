@@ -1,9 +1,13 @@
+
+
+// ignore_for_file: prefer_const_declarations
+
 final String tableNotes = 'notes';
 
 class NoteFields {
   static final List<String> values = [
     /// Add all fields
-    id, title, description, time
+    id,title, description, time
   ];
 
   static final String id = '_id';

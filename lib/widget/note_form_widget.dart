@@ -21,15 +21,9 @@ class NoteFormWidget extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              
               buildTitle(),
               const SizedBox(height: 8),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2),
-                child: Divider(
-                  thickness: 1,
-                  color: Color.fromARGB(255, 113, 99, 99),
-                ),
-              ),
               buildDescription(),
               const SizedBox(height: 16),
             ],

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import '../db/notes_database.dart';
 import '../model/note.dart';
@@ -23,7 +25,6 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
   @override
   void initState() {
     super.initState();
-
     title = widget.note?.title ?? '';
     description = widget.note?.description ?? '';
   }
@@ -31,13 +32,6 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.arrow_back_ios,
-            color: Colors.white,
-          ),),
           actions: [buildButton()],
         ),
         body: Form(
@@ -57,14 +51,13 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      child: TextButton(
-        
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: isFormValid ? null : Colors.grey.shade700,
+        ),
         onPressed: addOrUpdateNote,
-        child:Icon(Icons.check,
-        size: 30,
-        color: isFormValid
-              ? Theme.of(context).colorScheme.background
-              : Colors.grey.shade700,),
+        child: const Text('Save'),
       ),
     );
   }
